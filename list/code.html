@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html class="bg-surface text-on-surface" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pocket Palette - List</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "outline-variant": "#dac2ae",
+                        "primary-container": "#ff9f1c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#001e2b",
+                        "surface-bright": "#fff8f4",
+                        "surface-variant": "#f0e0d2",
+                        "on-secondary-fixed-variant": "#643f00",
+                        "on-background": "#221a12",
+                        "surface-container-low": "#fff1e7",
+                        "inverse-surface": "#382f25",
+                        "on-secondary-fixed": "#2a1800",
+                        "secondary-fixed": "#ffddb5",
+                        "on-primary-container": "#683c00",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#ffdcbc",
+                        "inverse-on-surface": "#ffeee0",
+                        "tertiary-container": "#00c3fd",
+                        "surface-container-high": "#f6e5d7",
+                        "tertiary-fixed": "#c0e8ff",
+                        "tertiary-fixed-dim": "#70d2ff",
+                        "error": "#ba1a1a",
+                        "primary": "#895100",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#895100",
+                        "on-surface-variant": "#544434",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#683d00",
+                        "surface": "#fff8f4",
+                        "secondary-fixed-dim": "#fabb65",
+                        "on-surface": "#221a12",
+                        "on-tertiary-container": "#004d66",
+                        "inverse-primary": "#ffb86b",
+                        "primary-fixed-dim": "#ffb86b",
+                        "on-primary-fixed": "#2c1700",
+                        "surface-container-highest": "#f0e0d2",
+                        "surface-container": "#fcebdd",
+                        "tertiary": "#006686",
+                        "secondary": "#835401",
+                        "on-tertiary-fixed-variant": "#004d66",
+                        "outline": "#877462",
+                        "on-secondary-container": "#764b00",
+                        "surface-dim": "#e8d7ca",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "background": "#fff8f4",
+                        "secondary-container": "#fdbd68"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "gutter-grid": "16px",
+                        "stack-sm": "8px",
+                        "unit": "4px",
+                        "stack-md": "16px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-sm": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "display-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen relative pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-surface-dim shadow-sm dark:bg-surface-container flex justify-between items-center px-margin-mobile h-16">
+<button class="flex items-center justify-center w-10 h-10 hover:bg-surface-container-low transition-colors rounded-full active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-[24px]">restaurant_menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Pocket Palette</h1>
+<button class="flex items-center justify-center w-10 h-10 hover:bg-surface-container-low transition-colors rounded-full active:scale-95 transition-transform duration-200 text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px]">search</span>
+</button>
+</header>
+<!-- Sticky Filter Tabs -->
+<nav class="sticky top-16 z-40 bg-surface/90 backdrop-blur-md pb-stack-sm pt-stack-sm px-margin-mobile overflow-x-auto hide-scrollbar whitespace-nowrap shadow-sm">
+<div class="flex gap-stack-sm">
+<button class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-caps text-label-caps transition-colors">All</button>
+<button class="px-4 py-2 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-low transition-colors">Want to Go</button>
+<button class="px-4 py-2 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-low transition-colors">Visited</button>
+<button class="px-4 py-2 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-low transition-colors">Favorites</button>
+</div>
+</nav>
+<!-- Main Content List -->
+<main class="pt-stack-md px-margin-mobile flex flex-col gap-stack-md">
+<!-- Card 1 -->
+<div class="flex bg-surface-container-lowest rounded-[20px] p-unit shadow-[0_4px_20px_0_rgba(34,26,18,0.06)] relative group overflow-hidden">
+<div class="w-[100px] h-[100px] flex-shrink-0">
+<img alt="Sushi" class="w-full h-full object-cover rounded-xl" data-alt="A beautifully plated piece of nigiri sushi resting on a textured, minimalist ceramic plate. The scene is lit with soft, diffused natural light that highlights the glistening texture of the fresh fish and the individual grains of rice. The background is a clean, warm Soft Cream color, creating a high-end, editorial foodie aesthetic. The composition is simple, elegant, and entirely focused on the culinary artistry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdesx2xj0EL-4Zbd4e_zO_pGA-z9rgjM_iS7lEDN4U5dFyTwiyJtkNYFpDKckpZ9Ug0xaxZvbKVFZrKC0mZTvGijp9V0hoisqrZp6rmpwlLpx2ZNzdoghEKdZ6r5ORXRiHUBy8esNKDrnXTYmU_UAseAGKabCNoIhugApkrkc_eOn4xhfIyPiIzZt5qhUX6cUjUaKmBGcX2RgoWw-W6-ego9jDpt0uW4XtfHt_SFnavyukT-C4-qFFAkYkn0rY6SryfHE5DlOcn-s"/>
+</div>
+<div class="flex flex-col justify-between py-2 px-3 flex-grow">
+<div class="flex justify-between items-start">
+<h2 class="font-title-sm text-title-sm text-on-surface truncate pr-2">Omakase Room</h2>
+<button class="text-primary hover:text-primary-container transition-colors">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Japanese • West Village</p>
+<div class="mt-1">
+<span class="inline-flex items-center px-2 py-0.5 rounded-sm bg-primary-container/20 text-on-background font-label-caps text-label-caps text-[10px]">Want to Go</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="flex bg-surface-container-lowest rounded-[20px] p-unit shadow-[0_4px_20px_0_rgba(34,26,18,0.06)] relative group overflow-hidden">
+<div class="w-[100px] h-[100px] flex-shrink-0">
+<img alt="Pasta" class="w-full h-full object-cover rounded-xl" data-alt="A close-up shot of hand-made pasta twirled perfectly on a modern matte white plate. The pasta is lightly coated in a rich, vibrant orange sauce, accented with a single fresh green basil leaf. The lighting is bright and inviting, typical of a chic, sunlit modern minimalist cafe. The overall mood is appetizing, sophisticated, and perfectly encapsulates a premium editorial dining experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh7BnIEXByH4X0Ft62g3kkK-QxJGaIzbQRW4WJ5DHXTYaEfsGkfN6enna-0gr5Xn_vhZz91FIkvtkY5pjBWrQlQvWmapg6B3s9fDssz6jOCFqq39JcMcg0gc8mwzVxyp62P7Ob2B9HhfCUeTw6k3a01IIx9iQhU5cn5ghFqiDbESu9n5ohHwBWzcA4mO_8k6_JWrLcbFtZ3WkDeYU29_e8r1-AlwWc9Ky1pz48NTP93eOcRGd6sYDfMMri_0yci_nVjXjuvbC52Ys"/>
+</div>
+<div class="flex flex-col justify-between py-2 px-3 flex-grow">
+<div class="flex justify-between items-start">
+<h2 class="font-title-sm text-title-sm text-on-surface truncate pr-2">L'Artusi</h2>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Italian • West Village</p>
+<div class="mt-1">
+<span class="inline-flex items-center px-2 py-0.5 rounded-sm bg-surface-variant text-on-surface-variant font-label-caps text-label-caps text-[10px]">Visited</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="flex bg-surface-container-lowest rounded-[20px] p-unit shadow-[0_4px_20px_0_rgba(34,26,18,0.06)] relative group overflow-hidden">
+<div class="w-[100px] h-[100px] flex-shrink-0">
+<img alt="Bakery" class="w-full h-full object-cover rounded-xl" data-alt="A flaky, golden-brown croissant sitting alone on a smooth, pale stone surface next to a minimalist ceramic cup of dark coffee. Warm morning light casts a soft, inviting shadow, emphasizing the delicate layers of the pastry. The surrounding space is entirely minimal and uncluttered, utilizing a warm cream and soft amber color palette. The image feels like a high-quality, editorial lifestyle shot from a discerning foodie's journal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO8tR2nwyY1rMGt0drzLC5tNos70nmUv3PKQSRChu8rmnrR1ZM1-fRvmTqlC3x-xy2Ijsrx5KzBLppz84PoJXgLDw2j-4y4sBbMP4nVd57gcJMfmwPpkVhiKHcuOixiTAqTTvINVOzsgMxSg0mu4ZQkMFYx-fAcaIY877zgTCXKCGWGMud0VkoXH8tU85d9lgJe1C29Ka-EdlMh7NCRtwb4d5cRPORL7zw609t_MVA7ZrFoWUSjnbkQpw_2Fk7Wew67gXJbPstWhQ"/>
+</div>
+<div class="flex flex-col justify-between py-2 px-3 flex-grow">
+<div class="flex justify-between items-start">
+<h2 class="font-title-sm text-title-sm text-on-surface truncate pr-2">La Cabra</h2>
+<button class="text-primary hover:text-primary-container transition-colors">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Bakery • East Village</p>
+<div class="mt-1">
+<span class="inline-flex items-center px-2 py-0.5 rounded-sm bg-surface-variant text-on-surface-variant font-label-caps text-label-caps text-[10px]">Visited</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface dark:bg-surface-container shadow-[0_-4px_20px_0_rgba(0,0,0,0.06)] flex justify-around items-center h-20 px-4 pb-safe">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:text-primary-container transition-colors active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="font-label-caps text-label-caps mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary dark:text-primary-container relative after:content-[''] after:w-1 after:h-1 after:bg-primary after:rounded-full after:mt-1 hover:text-primary-container transition-colors active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined text-[24px]">format_list_bulleted</span>
+<span class="font-label-caps text-label-caps mt-1">List</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:text-primary-container transition-colors active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined text-[24px]">map</span>
+<span class="font-label-caps text-label-caps mt-1">Map</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:text-primary-container transition-colors active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined text-[24px]">add_circle</span>
+<span class="font-label-caps text-label-caps mt-1">Add</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:text-primary-container transition-colors active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="font-label-caps text-label-caps mt-1">Profile</span>
+</button>
+</nav>
+</body></html>

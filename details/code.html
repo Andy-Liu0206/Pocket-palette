@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Restaurant Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&amp;family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "outline-variant": "#dac2ae",
+                    "primary-container": "#ff9f1c",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#001e2b",
+                    "surface-bright": "#fff8f4",
+                    "surface-variant": "#f0e0d2",
+                    "on-secondary-fixed-variant": "#643f00",
+                    "on-background": "#221a12",
+                    "surface-container-low": "#fff1e7",
+                    "inverse-surface": "#382f25",
+                    "on-secondary-fixed": "#2a1800",
+                    "secondary-fixed": "#ffddb5",
+                    "on-primary-container": "#683c00",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed": "#ffdcbc",
+                    "inverse-on-surface": "#ffeee0",
+                    "tertiary-container": "#00c3fd",
+                    "surface-container-high": "#f6e5d7",
+                    "tertiary-fixed": "#c0e8ff",
+                    "tertiary-fixed-dim": "#70d2ff",
+                    "error": "#ba1a1a",
+                    "primary": "#895100",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#895100",
+                    "on-surface-variant": "#544434",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#683d00",
+                    "surface": "#fff8f4",
+                    "secondary-fixed-dim": "#fabb65",
+                    "on-surface": "#221a12",
+                    "on-tertiary-container": "#004d66",
+                    "inverse-primary": "#ffb86b",
+                    "primary-fixed-dim": "#ffb86b",
+                    "on-primary-fixed": "#2c1700",
+                    "surface-container-highest": "#f0e0d2",
+                    "surface-container": "#fcebdd",
+                    "tertiary": "#006686",
+                    "secondary": "#835401",
+                    "on-tertiary-fixed-variant": "#004d66",
+                    "outline": "#877462",
+                    "on-secondary-container": "#764b00",
+                    "surface-dim": "#e8d7ca",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "background": "#fff8f4",
+                    "secondary-container": "#fdbd68"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "32px",
+                    "gutter-grid": "16px",
+                    "stack-sm": "8px",
+                    "unit": "4px",
+                    "stack-md": "16px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "headline-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "label-caps": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "title-sm": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "display-lg": [
+                            "Plus Jakarta Sans"
+                    ]
+            },
+            "fontSize": {
+                    "headline-md": [
+                            "22px",
+                            {
+                                    "lineHeight": "28px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-lg": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "title-sm": [
+                            "18px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "30px",
+                            {
+                                    "lineHeight": "38px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased pb-[100px]">
+<!-- Contextual Nav Suppression Logic Applied: No global TopAppBar or BottomNavBar as this is a focused detail screen -->
+<!-- Hero Image Section -->
+<section class="relative w-full h-[350px]">
+<img alt="Restaurant Hero" class="w-full h-full object-cover" data-alt="A stunning, high-contrast photograph of a beautifully plated artisanal dish on a rustic ceramic plate, taken from a slightly overhead angle. The setting implies a high-end, softly lit modern restaurant with warm ambient lighting. The food is vibrant, featuring rich amber sauces and fresh green garnishes, standing out against the creamy white background table setting. The overall aesthetic is sophisticated, editorial, and appetizing, perfectly suited for a discerning foodie's digital journal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCabKf5hqdRXIOuwVzqrl_kc_oQWMfi1UwU0mq7E5il7jPbg01tWpPv4obhrszYwyYA8twWITln1HKfaa1FGLAyrNAVHdub2LIlof5e25-VSakSSPQ4QdDOhMUbg52ja9e30aYkAzd7Cxn_qoB9PTWbjRcQv3SyXGesiKBdaNBb-Hgftxnh_k16jmehEhpH_Dm0NXqVleSPUAb2EAkJlRgJyZSxrdxQeHmsZuVfvTOm9odQr1g2UymDgm6cweMXt1_LDhgEUvDQ6jY"/>
+<!-- Subtle Top Gradient for icon visibility -->
+<div class="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent h-24"></div>
+<!-- Floating Back Action -->
+<button class="absolute top-6 left-margin-mobile w-10 h-10 bg-surface-container-lowest/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+</section>
+<!-- Main Content Canvas -->
+<main class="relative z-10 -mt-8 bg-surface rounded-t-[32px] px-margin-mobile pt-stack-lg pb-stack-lg">
+<!-- Header: Title, Meta, and Save Action -->
+<div class="flex justify-between items-start gap-4 mb-stack-md">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-unit">Osteria Bianca</h1>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined filled text-primary-container text-[18px]">star</span>
+<span class="font-body-md text-body-md text-on-surface-variant font-medium">4.9</span>
+</div>
+<span class="text-outline-variant font-body-md text-body-md">•</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Italian</span>
+<span class="text-outline-variant font-body-md text-body-md">•</span>
+<span class="font-body-md text-body-md text-on-surface-variant">$$$</span>
+</div>
+</div>
+<!-- Save Action Button -->
+<button class="w-12 h-12 flex items-center justify-center rounded-full bg-surface-container-low active:scale-95 transition-transform duration-200 group">
+<span class="material-symbols-outlined filled text-primary-container text-[28px] group-hover:scale-110 transition-transform">bookmark</span>
+</button>
+</div>
+<!-- Style Guidance: Chips & Tags -->
+<div class="flex flex-wrap gap-2 mb-stack-lg">
+<span class="bg-primary-container/15 text-on-surface px-3 py-1.5 rounded-lg font-label-caps text-label-caps">Handmade Pasta</span>
+<span class="bg-primary-container/15 text-on-surface px-3 py-1.5 rounded-lg font-label-caps text-label-caps">Wine Pairing</span>
+<span class="bg-primary-container/15 text-on-surface px-3 py-1.5 rounded-lg font-label-caps text-label-caps">Intimate</span>
+</div>
+<!-- Detailed Info List -->
+<div class="flex flex-col gap-stack-md mb-stack-lg bg-surface-container-lowest rounded-[20px] p-5 shadow-[0_4px_20px_0_rgba(0,0,0,0.06)] border border-surface-container-low">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-outline mt-0.5">location_on</span>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">124 Via della Scala</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Florence, IT 50123</p>
+</div>
+</div>
+<div class="w-full h-px bg-surface-container"></div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-outline mt-0.5">schedule</span>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Open Now <span class="text-outline-variant mx-1">•</span> Closes 11 PM</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Tue - Sun, 5 PM - 11 PM</p>
+</div>
+</div>
+<div class="w-full h-px bg-surface-container"></div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-outline mt-0.5">call</span>
+<p class="font-body-lg text-body-lg text-on-surface mt-0.5">+39 055 123 4567</p>
+</div>
+</div>
+<!-- Personal Notes Section -->
+<section class="mb-stack-lg">
+<h2 class="font-title-sm text-title-sm text-on-surface mb-stack-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[20px]">edit_note</span>
+                My Notes
+            </h2>
+<div class="bg-surface-bright rounded-[20px] p-5 border border-surface-container">
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                    Incredible truffle tagliatelle. The ambiance is perfect for a quiet date night. Ask for the corner table by the window if possible. Don't skip the house tiramisu.
+                </p>
+</div>
+</section>
+<!-- Gallery Section (Bento Grid Style) -->
+<section class="mb-stack-lg">
+<h2 class="font-title-sm text-title-sm text-on-surface mb-stack-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[20px]">photo_library</span>
+                Atmosphere &amp; Dishes
+            </h2>
+<div class="grid grid-cols-2 gap-gutter-grid">
+<!-- Large format emphasis -->
+<div class="col-span-2 h-48 rounded-[20px] overflow-hidden">
+<img alt="Restaurant Interior" class="w-full h-full object-cover" data-alt="An atmospheric shot of the restaurant's interior, featuring elegant minimalist design with soft lighting and natural wood textures. The scene is bright and inviting, focusing on a beautifully set table with sparkling glassware and crisp white linens. The mood is sophisticated and calm, capturing the essence of modern dining." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO8m31dnRKxEr-zA9IjrFa8vFs0yCjYgoR3gpozVVmjwQerJk1gRQpNVUiX5zum739oG1smvjo3lL6eonuqeyj0Yut_6gfu936YLKm2tTG5SJvz2gsypNNlsT5rkR30I4ndV6iMNlLvvIYnG9S3z8jym-l5p3DUbStLmAMk-7IrPEXLWpbPSEgPTrDDNUKiSSuuNztH_3oBUSiGhempFJCXFXevo8ndMqX4maJnPSb-uAinCjix7-HMOhd6jTFwibwK9iv6PRgV7k"/>
+</div>
+<!-- Smaller details -->
+<div class="col-span-1 h-36 rounded-[20px] overflow-hidden">
+<img alt="Dessert Close-up" class="w-full h-full object-cover" data-alt="A close-up, macro shot of an intricate dessert featuring layers of smooth cream, textured sponge, and a delicate tuile. The lighting is soft and diffused, creating a bright, minimalist aesthetic. The background is a pure, soft cream color that allows the rich warm tones of the food to pop. The image feels indulgent and expertly curated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ87i_OHxQh7Z99zTn9BIJvKAa9el7Pm4L_R1UGF0BWaevzLCHggVs7NGsFbjQ6DdQ7rvJ_Ir5NnGbos7ohYzNMz9v4D4jYldGD62ISOgDyRCrLYPaHZBzFBqmzrn_14i7j3nVs-rCjjK8bYkY4PRIwHzDphhileMXfOG9lDb0S6p0nqhbyUxf-iJdEph55aFBER5zaz07R3qzKf7bHaLXVFOVcUQ5neY0fboOkhPopmRJvVGCoj7Lsp2iX13v7ghuXJZRuCHCbVE"/>
+</div>
+<div class="col-span-1 h-36 rounded-[20px] overflow-hidden">
+<img alt="Cocktail" class="w-full h-full object-cover" data-alt="A vibrant, appetizing image of a crafted cocktail in a modern, elegant glass, garnished with a twist of orange peel. The background is softly blurred, showing hints of a sleek bar setting. The lighting emphasizes the warm amber hues of the drink, aligning with a premium, editorial visual style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnDUgI6QVWIFlYCDj2VktXJ9_EJBpf4IPMM4nVdUGJgu-oC7h9gHxSGC9kncQH1MdAjdedwJcLm946XUs047clzPT18tlf3UNVuoG_uFx6f9zc8qr0b-MByHwd9dXqabyobyTTABJbn3SL21Imjlav7Mruz6DEN34vxt4GP-IObp8AERaLUd7a2KrSRxIrKRujIDdqBRUHt3pDHr2xMBr8FkoUrTArrN-B-sffMaegYIGn_Zy5lzuuHK3cWsxXRHppIoR9fGFuXgw"/>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Action Bar -->
+<!-- Style Guidance: Floating paper effect, Primary Button Styling -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-md px-margin-mobile py-4 border-t border-surface-container-low shadow-[0_-8px_30px_0_rgba(0,0,0,0.04)] z-50 pb-safe">
+<button class="w-full bg-primary-container text-white h-14 rounded-full flex items-center justify-center gap-2 font-title-sm text-title-sm active:scale-[0.98] transition-transform shadow-sm">
+<span class="material-symbols-outlined text-[20px]">map</span>
+            Open in Google Maps
+        </button>
+</div>
+</body></html>

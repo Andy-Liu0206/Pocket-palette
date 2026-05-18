@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add New Entry - Pocket Palette</title>
+<!-- Google Fonts: Plus Jakarta Sans & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config from Brand Anchors -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "outline-variant": "#dac2ae",
+                        "primary-container": "#ff9f1c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#001e2b",
+                        "surface-bright": "#fff8f4",
+                        "surface-variant": "#f0e0d2",
+                        "on-secondary-fixed-variant": "#643f00",
+                        "on-background": "#221a12",
+                        "surface-container-low": "#fff1e7",
+                        "inverse-surface": "#382f25",
+                        "on-secondary-fixed": "#2a1800",
+                        "secondary-fixed": "#ffddb5",
+                        "on-primary-container": "#683c00",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#ffdcbc",
+                        "inverse-on-surface": "#ffeee0",
+                        "tertiary-container": "#00c3fd",
+                        "surface-container-high": "#f6e5d7",
+                        "tertiary-fixed": "#c0e8ff",
+                        "tertiary-fixed-dim": "#70d2ff",
+                        "error": "#ba1a1a",
+                        "primary": "#895100",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#895100",
+                        "on-surface-variant": "#544434",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#683d00",
+                        "surface": "#fff8f4",
+                        "secondary-fixed-dim": "#fabb65",
+                        "on-surface": "#221a12",
+                        "on-tertiary-container": "#004d66",
+                        "inverse-primary": "#ffb86b",
+                        "primary-fixed-dim": "#ffb86b",
+                        "on-primary-fixed": "#2c1700",
+                        "surface-container-highest": "#f0e0d2",
+                        "surface-container": "#fcebdd",
+                        "tertiary": "#006686",
+                        "secondary": "#835401",
+                        "on-tertiary-fixed-variant": "#004d66",
+                        "outline": "#877462",
+                        "on-secondary-container": "#764b00",
+                        "surface-dim": "#e8d7ca",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "background": "#fff8f4",
+                        "secondary-container": "#fdbd68"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "gutter-grid": "16px",
+                        "stack-sm": "8px",
+                        "unit": "4px",
+                        "stack-md": "16px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-sm": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "display-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Form specific resets to align with soft minimalist style */
+        input[type="text"], input[type="email"], textarea, select {
+            background-color: transparent;
+            border: none;
+            border-bottom: 2px solid #dac2ae; /* outline-variant */
+            border-radius: 0;
+            padding: 12px 0;
+            box-shadow: none !important;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-bottom-color: #ff9f1c; /* primary-container */
+            ring: 0;
+        }
+        /* Hide standard file input */
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen pb-24">
+<!-- Task-Focused Header (Suppresses standard TopAppBar) -->
+<header class="flex justify-between items-center px-margin-mobile h-16 sticky top-0 bg-surface z-50">
+<button class="p-2 -ml-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">New Entry</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<main class="px-margin-mobile mt-stack-md flex flex-col gap-stack-lg">
+<!-- Social Share Import Entry -->
+<section class="bg-surface-container-lowest rounded-[20px] p-5 shadow-[0_4px_20px_0_rgba(0,0,0,0.06)] border border-primary-fixed">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary-container/15 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px]">ios_share</span>
+</div>
+<div class="flex-1 min-w-0">
+<h2 class="font-title-sm text-title-sm text-on-surface mb-1">Import from IG or Threads</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">When a post, Reel, or Thread is shared to Pocket Palette, the app opens an assisted import flow and pre-fills restaurant details.</p>
+<a class="inline-flex items-center gap-2 bg-primary-container text-on-secondary px-4 py-2.5 rounded-full font-title-sm text-title-sm shadow-sm hover:bg-inverse-primary transition-colors active:scale-95 duration-200" href="../share/code.html">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+Preview import flow
+</a>
+</div>
+</div>
+</section>
+<!-- Photo Upload Section -->
+<section>
+<label class="block w-full aspect-video bg-surface-container rounded-xl flex flex-col items-center justify-center border-2 border-dashed border-outline-variant cursor-pointer hover:bg-surface-container-high transition-colors overflow-hidden relative">
+<span class="material-symbols-outlined text-4xl text-outline mb-2">add_a_photo</span>
+<span class="font-title-sm text-title-sm text-on-surface-variant">Upload Cover Photo</span>
+<input accept="image/*" type="file"/>
+</label>
+</section>
+<!-- Form Details -->
+<section class="flex flex-col gap-stack-md bg-surface-container-lowest rounded-[20px] p-6 shadow-[0_4px_20px_0_rgba(0,0,0,0.06)]">
+<!-- Restaurant Name -->
+<div class="flex flex-col">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase" for="restaurant-name">Restaurant Name</label>
+<input class="font-title-sm text-title-sm text-on-surface placeholder:text-outline-variant w-full" id="restaurant-name" placeholder="e.g. The Golden Spatula" type="text"/>
+</div>
+<!-- Category -->
+<div class="flex flex-col mt-unit">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Category</label>
+<div class="flex flex-wrap gap-2">
+<button class="bg-primary-container text-on-primary-container px-4 py-2 rounded-full font-body-md text-body-md shadow-sm">Cafe</button>
+<button class="bg-surface-container text-on-surface px-4 py-2 rounded-full font-body-md text-body-md border border-outline-variant">Fine Dining</button>
+<button class="bg-surface-container text-on-surface px-4 py-2 rounded-full font-body-md text-body-md border border-outline-variant">Street Food</button>
+<button class="bg-surface-container text-on-surface px-4 py-2 rounded-full font-body-md text-body-md border border-outline-variant border-dashed flex items-center">
+<span class="material-symbols-outlined text-sm mr-1">add</span> More
+                    </button>
+</div>
+</div>
+<!-- Location -->
+<div class="flex flex-col mt-unit relative">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase" for="location">Location</label>
+<input class="font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant w-full pr-10" id="location" placeholder="Search address or map..." type="text"/>
+<span class="material-symbols-outlined absolute right-0 bottom-3 text-outline">location_on</span>
+</div>
+</section>
+<!-- Status & Experience -->
+<section class="flex flex-col gap-stack-md bg-surface-container-lowest rounded-[20px] p-6 shadow-[0_4px_20px_0_rgba(0,0,0,0.06)]">
+<!-- Visit Status -->
+<div class="flex flex-col">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-3">Visit Status</label>
+<div class="flex bg-surface-container rounded-lg p-1">
+<button class="flex-1 py-2 rounded-md bg-surface-container-lowest shadow-sm font-title-sm text-title-sm text-on-surface text-center">To Try</button>
+<button class="flex-1 py-2 rounded-md font-title-sm text-title-sm text-on-surface-variant text-center hover:bg-surface-container-high transition-colors">Visited</button>
+</div>
+</div>
+<!-- Rating -->
+<div class="flex flex-col mt-unit">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Rating</label>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-3xl text-outline-variant cursor-pointer hover:text-primary-container">star</span>
+<span class="material-symbols-outlined text-3xl text-outline-variant cursor-pointer hover:text-primary-container">star</span>
+<span class="material-symbols-outlined text-3xl text-outline-variant cursor-pointer hover:text-primary-container">star</span>
+<span class="material-symbols-outlined text-3xl text-outline-variant cursor-pointer hover:text-primary-container">star</span>
+<span class="material-symbols-outlined text-3xl text-outline-variant cursor-pointer hover:text-primary-container">star</span>
+</div>
+</div>
+<!-- Notes -->
+<div class="flex flex-col mt-unit">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase" for="notes">Personal Notes</label>
+<textarea class="font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant w-full resize-none" id="notes" placeholder="What stood out? Must order dishes?" rows="3"></textarea>
+</div>
+</section>
+</main>
+<!-- Fixed Bottom Action Area -->
+<div class="fixed bottom-0 left-0 w-full p-margin-mobile bg-gradient-to-t from-surface via-surface to-transparent pb-safe">
+<button class="w-full bg-primary-container text-on-secondary py-4 rounded-full font-title-sm text-title-sm shadow-md hover:bg-inverse-primary transition-colors active:scale-95 duration-200">
+            Save to Pocket List
+        </button>
+</div>
+</body></html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pocket Palette</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "outline-variant": "#dac2ae",
+                        "primary-container": "#ff9f1c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#001e2b",
+                        "surface-bright": "#fff8f4",
+                        "surface-variant": "#f0e0d2",
+                        "on-secondary-fixed-variant": "#643f00",
+                        "on-background": "#221a12",
+                        "surface-container-low": "#fff1e7",
+                        "inverse-surface": "#382f25",
+                        "on-secondary-fixed": "#2a1800",
+                        "secondary-fixed": "#ffddb5",
+                        "on-primary-container": "#683c00",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#ffdcbc",
+                        "inverse-on-surface": "#ffeee0",
+                        "tertiary-container": "#00c3fd",
+                        "surface-container-high": "#f6e5d7",
+                        "tertiary-fixed": "#c0e8ff",
+                        "tertiary-fixed-dim": "#70d2ff",
+                        "error": "#ba1a1a",
+                        "primary": "#895100",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#895100",
+                        "on-surface-variant": "#544434",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#683d00",
+                        "surface": "#fff8f4",
+                        "secondary-fixed-dim": "#fabb65",
+                        "on-surface": "#221a12",
+                        "on-tertiary-container": "#004d66",
+                        "inverse-primary": "#ffb86b",
+                        "primary-fixed-dim": "#ffb86b",
+                        "on-primary-fixed": "#2c1700",
+                        "surface-container-highest": "#f0e0d2",
+                        "surface-container": "#fcebdd",
+                        "tertiary": "#006686",
+                        "secondary": "#835401",
+                        "on-tertiary-fixed-variant": "#004d66",
+                        "outline": "#877462",
+                        "on-secondary-container": "#764b00",
+                        "surface-dim": "#e8d7ca",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "background": "#fff8f4",
+                        "secondary-container": "#fdbd68"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "gutter-grid": "16px",
+                        "stack-sm": "8px",
+                        "unit": "4px",
+                        "stack-md": "16px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-sm": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "display-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-md text-body-md text-on-background antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-surface-dim shadow-sm dark:bg-surface-container flex justify-between items-center px-margin-mobile h-16 transition-colors">
+<button class="hover:bg-surface-container-low transition-colors active:scale-95 duration-200 p-2 -ml-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">restaurant_menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Pocket Palette</h1>
+<button class="hover:bg-surface-container-low transition-colors active:scale-95 duration-200 p-2 -mr-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">search</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex-1 pt-24 pb-32 overflow-y-auto">
+<!-- Greeting & Search -->
+<section class="px-margin-mobile mb-stack-lg">
+<h2 class="font-display-lg text-display-lg text-on-background mb-unit">Good morning, Foodie</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-md">What are you craving today?</p>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-lowest shadow-[0_4px_20px_0_rgba(0,0,0,0.04)] border-none rounded-lg py-4 pl-12 pr-4 font-body-lg text-on-background placeholder:text-outline focus:ring-2 focus:ring-primary-container outline-none transition-shadow" placeholder="Search areas or cuisines..." type="text"/>
+</div>
+</section>
+<!-- Featured Categories -->
+<section class="mb-stack-lg overflow-x-auto no-scrollbar pl-margin-mobile pr-4 pb-2">
+<div class="flex gap-stack-sm">
+<button class="flex items-center gap-2 bg-primary-container/15 hover:bg-primary-container/25 text-on-background px-4 py-2.5 rounded-full transition-colors whitespace-nowrap active:scale-95">
+<span class="material-symbols-outlined text-[18px]">local_cafe</span>
+<span class="font-label-caps text-label-caps">Coffee</span>
+</button>
+<button class="flex items-center gap-2 bg-primary-container/15 hover:bg-primary-container/25 text-on-background px-4 py-2.5 rounded-full transition-colors whitespace-nowrap active:scale-95">
+<span class="material-symbols-outlined text-[18px]">ramen_dining</span>
+<span class="font-label-caps text-label-caps">Hotpot</span>
+</button>
+<button class="flex items-center gap-2 bg-primary-container/15 hover:bg-primary-container/25 text-on-background px-4 py-2.5 rounded-full transition-colors whitespace-nowrap active:scale-95">
+<span class="material-symbols-outlined text-[18px]">egg_alt</span>
+<span class="font-label-caps text-label-caps">Brunch</span>
+</button>
+<button class="flex items-center gap-2 bg-primary-container/15 hover:bg-primary-container/25 text-on-background px-4 py-2.5 rounded-full transition-colors whitespace-nowrap active:scale-95">
+<span class="material-symbols-outlined text-[18px]">bakery_dining</span>
+<span class="font-label-caps text-label-caps">Bakery</span>
+</button>
+</div>
+</section>
+<!-- Recently Added Carousel -->
+<section class="mb-stack-lg">
+<div class="px-margin-mobile mb-stack-md flex justify-between items-end">
+<h3 class="font-title-sm text-title-sm text-on-background">Recently Added</h3>
+<a class="font-body-md text-body-md text-primary-container font-medium hover:underline" href="#">See all</a>
+</div>
+<div class="flex overflow-x-auto no-scrollbar pl-margin-mobile pr-4 gap-gutter-grid snap-x pb-4">
+<!-- Card 1 -->
+<article class="min-w-[280px] w-[80vw] md:w-[320px] snap-center bg-surface-container-lowest rounded-[20px] shadow-[0_4px_20px_0_rgba(0,0,0,0.06)] overflow-hidden flex flex-col group cursor-pointer transition-shadow hover:shadow-[0_8px_30px_0_rgba(0,0,0,0.08)]">
+<div class="relative h-48 w-full overflow-hidden">
+<img alt="Avocado Toast" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A close-up, highly detailed shot of an elegant avocado toast on artisanal sourdough, topped with a perfectly poached egg and microgreens. The scene is bathed in soft, natural morning light, creating a warm, appetizing glow. The setting is a minimalist cafe table with subtle white space around the dish, emphasizing the high-end, editorial food photography style. Colors feature soft creams, vibrant greens, and a pop of warm amber from the egg yolk." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5woe_LnZb4M0BDhmixrThNT5AAlZvK84sJO1UByflQi-ZFIankguQz4vZOdlQocXkwnjUxyldE9thV1HmJ1DF60urrSoQoI92yVUzBQx2MuwfEU9qzuZlG_gMMGcOJ4LfUxDYjbClnGBgtKZe7a9Y5hXHKiLTGZfG6RjDiU2LDEaIm452s9aC-XrBVUeOFxhoZS6jKmhdytHtT7uWFaRMuezvEn6Wf1PnZyredlqLsrDuGek-zoM_r94qgRqRIth3R9fMsm0L-dE"/>
+<div class="absolute top-3 right-3 bg-surface-container-lowest/80 backdrop-blur-md p-2 rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-on-background text-[20px]">bookmark_border</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-1">
+<h4 class="font-headline-md text-headline-md text-on-background truncate">The Rustic Spoon</h4>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-md text-body-md">
+<span class="flex items-center gap-1 text-primary-container font-medium">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span> 4.9
+                            </span>
+<span class="text-outline-variant">•</span>
+<span>0.5 mi</span>
+<span class="text-outline-variant">•</span>
+<span>Brunch</span>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="min-w-[280px] w-[80vw] md:w-[320px] snap-center bg-surface-container-lowest rounded-[20px] shadow-[0_4px_20px_0_rgba(0,0,0,0.06)] overflow-hidden flex flex-col group cursor-pointer transition-shadow hover:shadow-[0_8px_30px_0_rgba(0,0,0,0.08)]">
+<div class="relative h-48 w-full overflow-hidden">
+<img alt="Coffee and Croissant" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A sophisticated overhead view of a perfectly poured latte with intricate rosetta latte art in a handcrafted ceramic cup. The cup rests on a clean, soft cream surface alongside a flaky, golden butter croissant on a minimalist wooden plate. Lighting is bright, diffused, and high-key, casting very soft shadows that enhance the modern aesthetic. The color palette focuses on warm browns, crisp whites, and gentle beige tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAE5GMrtC6_tcfWN8AyQ489xvWUIuqFnFGFmMhJBBUGEBH-wSON9q8htr1atEjLPknVExN7aMBrnw7-omB01dC_PVIfU-k-BkE62CoaifgIURHsju0kG1Y1xSg83sPnYlpYHxDJFQjARROs5p1fxJ0dU0Y7UQP-cR5JObi9OMe0fVlsG4PV3Pv2uLPvxF0fxE3-gJ_gBzHVWiPgCKMfgzYRvAArXjjD_B9L175JJp-_LYhNIIEXkuhO0brCkxIE-j_TymCqEQi5V8g"/>
+<div class="absolute top-3 right-3 bg-surface-container-lowest/80 backdrop-blur-md p-2 rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-on-background text-[20px]">bookmark_border</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-1">
+<h4 class="font-headline-md text-headline-md text-on-background truncate">Ozone Roasters</h4>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-md text-body-md">
+<span class="flex items-center gap-1 text-primary-container font-medium">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span> 4.7
+                            </span>
+<span class="text-outline-variant">•</span>
+<span>1.2 mi</span>
+<span class="text-outline-variant">•</span>
+<span>Coffee</span>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- Curated Collections (Bento Style Preview) -->
+<section class="px-margin-mobile mb-stack-lg">
+<h3 class="font-title-sm text-title-sm text-on-background mb-stack-md">Curated Collections</h3>
+<div class="grid grid-cols-2 gap-gutter-grid h-48">
+<!-- Large Bento Item -->
+<div class="col-span-1 row-span-1 rounded-[20px] overflow-hidden relative group cursor-pointer shadow-[0_4px_20px_0_rgba(0,0,0,0.06)]">
+<img alt="Date Night" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A vibrant, top-down view of a lavish dinner spread on a dark wooden table, featuring various tapas, a glass of red wine, and dimly lit ambient restaurant lighting. The mood is intimate and indulgent. The style is modern editorial, contrasting deep shadows with the warm amber glow of candlelight illuminating the rich textures of the food." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHnMlL0IgeAm5n4pUWEAZyD31fKMdVdwyUDlt0wXOLjskLzthQsZ7XoOtJQKG-Jx3AAv7LLtMsypBHe_9HTVWjuDxry5VXOn9LVEamji_fKpCQN6bw3-kSAFiK876HWm8dXDjQDPCjdUXTVd_zYl7ueCh1Xr280ktYcedaO5By8R9EEhIztQgmAK6SXWdr8chC5iZiPcElqOeDIrijUc3Qkirmezi5ODMBcbmr8GumtrmqXmozTyb-ceno9o4SMhtZzWQ-vgQrS3I"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4">
+<h4 class="font-headline-md text-headline-md text-surface-container-lowest">Date Night</h4>
+</div>
+</div>
+<!-- Stacked Bento Items -->
+<div class="col-span-1 grid grid-rows-2 gap-gutter-grid">
+<div class="rounded-[20px] bg-secondary-container/20 flex items-center justify-center p-4 cursor-pointer hover:bg-secondary-container/30 transition-colors shadow-[0_4px_20px_0_rgba(0,0,0,0.06)]">
+<div class="text-center">
+<span class="material-symbols-outlined text-[28px] text-on-secondary-container mb-1">local_pizza</span>
+<p class="font-label-caps text-label-caps text-on-secondary-container">Late Night</p>
+</div>
+</div>
+<div class="rounded-[20px] bg-tertiary-container/20 flex items-center justify-center p-4 cursor-pointer hover:bg-tertiary-container/30 transition-colors shadow-[0_4px_20px_0_rgba(0,0,0,0.06)]">
+<div class="text-center">
+<span class="material-symbols-outlined text-[28px] text-on-tertiary-container mb-1">eco</span>
+<p class="font-label-caps text-label-caps text-on-tertiary-container">Vegan Eats</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface dark:bg-surface-container-lowest shadow-[0_-4px_20px_0_rgba(0,0,0,0.06)] flex justify-around items-center h-20 px-4 pb-safe md:hidden transition-colors">
+<!-- Home (Active) -->
+<button class="flex flex-col items-center justify-center text-primary dark:text-primary-container relative after:content-[''] after:absolute after:-bottom-3 after:w-1.5 after:h-1.5 after:bg-primary-container after:rounded-full hover:text-primary-container transition-colors active:scale-90 duration-150 group">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-caps text-label-caps mt-1">Home</span>
+</button>
+<!-- List -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:text-primary-container transition-colors active:scale-90 duration-150 group">
+<span class="material-symbols-outlined text-[24px]">format_list_bulleted</span>
+<span class="font-label-caps text-label-caps mt-1 group-hover:text-primary-container">List</span>
+</button>
+<!-- Map -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:text-primary-container transition-colors active:scale-90 duration-150 group">
+<span class="material-symbols-outlined text-[24px]">map</span>
+<span class="font-label-caps text-label-caps mt-1 group-hover:text-primary-container">Map</span>
+</button>
+<!-- Add -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:text-primary-container transition-colors active:scale-90 duration-150 group">
+<span class="material-symbols-outlined text-[24px]">add_circle</span>
+<span class="font-label-caps text-label-caps mt-1 group-hover:text-primary-container">Add</span>
+</button>
+<!-- Profile -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:text-primary-container transition-colors active:scale-90 duration-150 group">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="font-label-caps text-label-caps mt-1 group-hover:text-primary-container">Profile</span>
+</button>
+</nav>
+</body></html>

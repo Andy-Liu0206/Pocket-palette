@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Share Import - Pocket Palette</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "outline-variant": "#dac2ae",
+                        "primary-container": "#ff9f1c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#fff8f4",
+                        "surface-variant": "#f0e0d2",
+                        "on-background": "#221a12",
+                        "surface-container-low": "#fff1e7",
+                        "inverse-surface": "#382f25",
+                        "on-primary-container": "#683c00",
+                        "primary-fixed": "#ffdcbc",
+                        "inverse-on-surface": "#ffeee0",
+                        "tertiary-container": "#00c3fd",
+                        "surface-container-high": "#f6e5d7",
+                        "tertiary-fixed": "#c0e8ff",
+                        "error": "#ba1a1a",
+                        "primary": "#895100",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#544434",
+                        "surface": "#fff8f4",
+                        "secondary-fixed-dim": "#fabb65",
+                        "on-surface": "#221a12",
+                        "on-tertiary-container": "#004d66",
+                        "inverse-primary": "#ffb86b",
+                        "surface-container-highest": "#f0e0d2",
+                        "surface-container": "#fcebdd",
+                        "tertiary": "#006686",
+                        "secondary": "#835401",
+                        "outline": "#877462",
+                        "on-secondary-container": "#764b00",
+                        "background": "#fff8f4",
+                        "secondary-container": "#fdbd68"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "gutter-grid": "16px",
+                        "stack-sm": "8px",
+                        "unit": "4px",
+                        "stack-md": "16px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-sm": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "display-lg": ["30px", { "lineHeight": "38px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+        input[type="text"], textarea {
+            background-color: transparent;
+            border: none;
+            border-bottom: 2px solid #dac2ae;
+            border-radius: 0;
+            box-shadow: none !important;
+            padding: 10px 0;
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-bottom-color: #ff9f1c;
+            outline: none;
+            box-shadow: none;
+        }
+        @keyframes progress {
+            from { transform: translateX(-72%); }
+            to { transform: translateX(96%); }
+        }
+        .progress-bar {
+            animation: progress 1.25s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen pb-28">
+<header class="sticky top-0 z-50 bg-surface/95 backdrop-blur-md h-16 px-margin-mobile flex items-center justify-between border-b border-surface-container-low">
+<a aria-label="Close" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low active:scale-95 transition" href="../add/code.html">
+<span class="material-symbols-outlined">close</span>
+</a>
+<h1 class="font-headline-md text-headline-md text-on-surface">匯入貼文</h1>
+<button aria-label="More options" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low active:scale-95 transition">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</header>
+
+<main class="px-margin-mobile pt-stack-md flex flex-col gap-stack-lg">
+<section class="bg-surface-container-lowest rounded-[20px] shadow-[0_4px_20px_0_rgba(34,26,18,0.06)] overflow-hidden">
+<div class="h-44 relative overflow-hidden">
+<img alt="Shared restaurant post preview" class="absolute inset-0 h-full w-full object-cover" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&amp;fit=crop&amp;w=1200&amp;q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-on-surface/10 to-transparent"></div>
+<div class="absolute left-4 right-4 bottom-4 flex items-end justify-between gap-3">
+<div>
+<div class="inline-flex items-center gap-1.5 rounded-full bg-surface-container-lowest/90 px-3 py-1 text-on-surface font-label-caps text-label-caps mb-2">
+<span class="material-symbols-outlined text-[16px] text-primary">ios_share</span>
+<span id="source-label">Instagram 分享</span>
+</div>
+<h2 class="font-display-lg text-display-lg text-white">解析美食店家資訊</h2>
+</div>
+<span class="w-11 h-11 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined filled">auto_awesome</span>
+</span>
+</div>
+</div>
+<div class="p-5">
+<div class="flex items-center justify-between mb-3">
+<p class="font-title-sm text-title-sm text-on-surface">收到的分享內容</p>
+<span id="confidence-pill" class="bg-tertiary-container/20 text-on-tertiary-container rounded-full px-3 py-1 font-label-caps text-label-caps">解析中</span>
+</div>
+<textarea id="shared-input" class="w-full min-h-[92px] resize-none font-body-md text-body-md text-on-surface placeholder:text-outline" spellcheck="false"></textarea>
+<div class="mt-4 rounded-full h-2 overflow-hidden bg-surface-container">
+<div id="progress-strip" class="progress-bar h-full w-2/3 bg-primary-container rounded-full"></div>
+</div>
+<div id="parse-status" class="flex items-center gap-2 mt-3 text-on-surface-variant font-body-md text-body-md">
+<span class="material-symbols-outlined text-[18px] text-primary-container">travel_explore</span>
+<span>正在辨識店名、地區、料理類型與可能的 Google Maps 搜尋關鍵字</span>
+</div>
+</div>
+</section>
+
+<section class="flex flex-col gap-stack-md">
+<div class="flex items-center justify-between">
+<h3 class="font-title-sm text-title-sm text-on-surface">辨識結果</h3>
+<button id="retry-button" class="inline-flex items-center gap-1 text-primary font-label-caps text-label-caps px-2 py-1 rounded-lg hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+重新解析
+</button>
+</div>
+
+<article class="bg-surface-container-lowest rounded-[20px] p-5 shadow-[0_4px_20px_0_rgba(34,26,18,0.06)] border border-primary-fixed">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary-container/15 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[28px]">restaurant</span>
+</div>
+<div class="flex-1 min-w-0">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase" for="restaurant-name">店家名稱</label>
+<input id="restaurant-name" class="w-full font-title-sm text-title-sm text-on-surface" type="text" value=""/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-gutter-grid mt-stack-md">
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase" for="category">類型</label>
+<input id="category" class="w-full font-body-lg text-body-lg text-on-surface" type="text"/>
+</div>
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase" for="area">地區</label>
+<input id="area" class="w-full font-body-lg text-body-lg text-on-surface" type="text"/>
+</div>
+</div>
+<div class="mt-stack-md">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase" for="maps-query">Maps 搜尋關鍵字</label>
+<div class="flex items-center gap-3">
+<input id="maps-query" class="w-full font-body-lg text-body-lg text-on-surface" type="text"/>
+<button id="maps-button" aria-label="Open Google Maps search" class="w-10 h-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center shrink-0 hover:bg-primary-container hover:text-on-primary-container active:scale-95 transition">
+<span class="material-symbols-outlined">map</span>
+</button>
+</div>
+</div>
+</article>
+
+<article class="bg-surface-container-lowest rounded-[20px] p-5 shadow-[0_4px_20px_0_rgba(34,26,18,0.06)]">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-outline mt-1">sticky_note_2</span>
+<div class="flex-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase" for="notes">自動整理備註</label>
+<textarea id="notes" class="w-full min-h-[92px] resize-none font-body-md text-body-md text-on-surface"></textarea>
+</div>
+</div>
+</article>
+
+<article class="bg-surface-container rounded-[20px] p-5 border border-outline-variant">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-tertiary">info</span>
+<div>
+<p class="font-title-sm text-title-sm text-on-surface mb-1">需要確認的欄位</p>
+<p class="font-body-md text-body-md text-on-surface-variant">社群平台可能只提供連結與貼文文字。若地址或營業資訊不足，APP 會先保留來源連結，並引導使用 Google Maps 搜尋後補齊。</p>
+</div>
+</div>
+</article>
+</section>
+</main>
+
+<div class="fixed bottom-0 left-0 w-full bg-surface/95 backdrop-blur-md px-margin-mobile py-4 border-t border-surface-container-low shadow-[0_-8px_30px_0_rgba(0,0,0,0.04)] z-50 pb-safe">
+<div class="flex gap-3">
+<button class="w-14 h-14 rounded-full bg-surface-container-low text-primary flex items-center justify-center active:scale-95 transition" aria-label="Save draft">
+<span class="material-symbols-outlined">draft</span>
+</button>
+<button id="save-button" class="flex-1 bg-primary-container text-white h-14 rounded-full flex items-center justify-center gap-2 font-title-sm text-title-sm active:scale-[0.98] transition-transform shadow-sm">
+<span class="material-symbols-outlined">bookmark_add</span>
+加入口袋名單
+</button>
+</div>
+</div>
+
+<script>
+const sampleShare = `台北近期最想二訪的義式小餐館：Osteria Bianca
+招牌是松露手工寬麵，晚餐建議先訂位。
+https://www.instagram.com/reel/C8FoodieMap/`;
+
+const params = new URLSearchParams(window.location.search);
+const sharedInput = document.getElementById("shared-input");
+const sourceLabel = document.getElementById("source-label");
+const parseStatus = document.getElementById("parse-status");
+const confidencePill = document.getElementById("confidence-pill");
+const progressStrip = document.getElementById("progress-strip");
+const fields = {
+    name: document.getElementById("restaurant-name"),
+    category: document.getElementById("category"),
+    area: document.getElementById("area"),
+    mapsQuery: document.getElementById("maps-query"),
+    notes: document.getElementById("notes")
+};
+
+function getSharedPayload() {
+    const incoming = [params.get("title"), params.get("text"), params.get("url")].filter(Boolean).join("\n");
+    return incoming || sampleShare;
+}
+
+function detectSource(text) {
+    const lowered = text.toLowerCase();
+    if (lowered.includes("threads.net")) return "Threads 分享";
+    if (lowered.includes("/reel/")) return "Instagram Reels 分享";
+    if (lowered.includes("instagram.com")) return "Instagram 貼文分享";
+    return "社群分享";
+}
+
+function extractPostUrl(text) {
+    return text.match(/https?:\/\/\S+/)?.[0]?.replace(/[),.。]+$/, "") || "";
+}
+
+function inferRestaurant(text) {
+    const known = [
+        { key: "Osteria Bianca", category: "義式料理", area: "台北", dish: "松露手工寬麵" },
+        { key: "La Cabra", category: "咖啡甜點", area: "台北", dish: "可頌與手沖咖啡" },
+        { key: "Omakase Room", category: "日本料理", area: "中山", dish: "無菜單壽司" }
+    ];
+    const found = known.find(item => text.includes(item.key));
+    if (found) return found;
+
+    const firstTextLine = text.split(/\n+/).map(line => line.trim()).find(line => line && !line.startsWith("http"));
+    const candidate = firstTextLine?.match(/[A-Z][A-Za-z'& ]{2,}|[\u4e00-\u9fa5・]{3,}/)?.[0] || "待確認店家";
+    return { key: candidate, category: "待分類", area: "待確認", dish: "貼文推薦菜色" };
+}
+
+function fillResult() {
+    const text = sharedInput.value.trim();
+    const restaurant = inferRestaurant(text);
+    const url = extractPostUrl(text);
+    fields.name.value = restaurant.key;
+    fields.category.value = restaurant.category;
+    fields.area.value = restaurant.area;
+    fields.mapsQuery.value = `${restaurant.key} ${restaurant.area}`.trim();
+    fields.notes.value = `來源：${detectSource(text)}
+推薦重點：${restaurant.dish}
+原始連結：${url || "未偵測到連結"}`;
+    sourceLabel.textContent = detectSource(text);
+    confidencePill.textContent = restaurant.area === "待確認" ? "需人工確認" : "高可信度";
+    confidencePill.className = restaurant.area === "待確認"
+        ? "bg-secondary-container/40 text-on-secondary-container rounded-full px-3 py-1 font-label-caps text-label-caps"
+        : "bg-tertiary-container/20 text-on-tertiary-container rounded-full px-3 py-1 font-label-caps text-label-caps";
+    parseStatus.innerHTML = `<span class="material-symbols-outlined text-[18px] text-primary-container">check_circle</span><span>已完成初步解析，可先修正欄位再加入名單</span>`;
+    progressStrip.classList.remove("progress-bar");
+    progressStrip.classList.add("w-full");
+}
+
+sharedInput.value = getSharedPayload();
+window.setTimeout(fillResult, 900);
+document.getElementById("retry-button").addEventListener("click", () => {
+    parseStatus.innerHTML = `<span class="material-symbols-outlined text-[18px] text-primary-container">travel_explore</span><span>正在重新比對貼文內容與店家線索</span>`;
+    confidencePill.textContent = "解析中";
+    progressStrip.classList.add("progress-bar");
+    progressStrip.classList.remove("w-full");
+    window.setTimeout(fillResult, 700);
+});
+document.getElementById("save-button").addEventListener("click", () => {
+    parseStatus.innerHTML = `<span class="material-symbols-outlined text-[18px] text-primary-container">bookmark_added</span><span>${fields.name.value || "店家"} 已加入「想去」名單</span>`;
+});
+document.getElementById("maps-button").addEventListener("click", () => {
+    const query = encodeURIComponent(fields.mapsQuery.value || fields.name.value || sharedInput.value);
+    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, "_blank", "noopener");
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "Pocket Palette",
+    "slug": "pocket-palette",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "pocketpalette",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Pocket Palette 需要位置權限來顯示附近的口袋名單餐廳。"
+      }
+    },
+    "android": {
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
+    },
+    "plugins": [
+      "expo-location",
+      "expo-font"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: pocket-palette-ai
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: OPENROUTER_MODEL
+        value: qwen/qwen3-next-80b-a3b-instruct:free
+      - key: APP_TITLE
+        value: Pocket Palette
+      - key: APP_REFERER
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
