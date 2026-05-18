@@ -52,12 +52,14 @@ const signatureFoodSignals = [
 export type SocialImportAnalysis = Partial<Restaurant> & {
   missingFields: string[];
   normalizedUrl: string;
+  warnings?: string[];
 };
 
 type BackendImportAnalysis = Partial<Restaurant> & {
   caption?: string;
   confidence?: number;
   missingFields?: string[];
+  warnings?: string[];
 };
 
 export function extractUrlFromSharedText(value: string) {

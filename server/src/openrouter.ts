@@ -75,7 +75,6 @@ export async function analyzeRestaurantWithOpenRouter({
         model: getModel(),
         temperature: 0.1,
         max_tokens: 900,
-        response_format: { type: 'json_object' },
         messages: [
           {
             role: 'system',
@@ -113,6 +112,7 @@ export async function analyzeRestaurantWithOpenRouter({
 
     const payload = (await response.json()) as OpenRouterResponse;
     if (!response.ok) {
+      console.error('OpenRouter request failed', response.status, payload.error?.message);
       throw new Error(payload.error?.message || `OpenRouter request failed: ${response.status}`);
     }
 

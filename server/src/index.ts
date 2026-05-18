@@ -5,6 +5,7 @@ import {
   fetchCaptionFromUrl,
   normalizeSocialUrl,
 } from './caption.js';
+import { parseRestaurantLocally } from './fallbackParser.js';
 import { analyzeRestaurantWithOpenRouter } from './openrouter.js';
 import { sanitizeImportAnalysis } from './restaurantSchema.js';
 import type { ImportAnalyzeRequest } from './types.js';
@@ -64,11 +65,18 @@ app.post('/import/analyze', async (request: Request<object, object, ImportAnalyz
       return;
     }
 
-    const raw = await analyzeRestaurantWithOpenRouter({
-      caption: sourceCaption,
-      url: normalizedUrl,
-      platform: sourcePlatform,
-    });
+    let raw: Record<string, unknown>;
+    try {
+      raw = await analyzeRestaurantWithOpenRouter({
+        caption: sourceCaption,
+        url: normalizedUrl,
+        platform: sourcePlatform,
+      });
+    } catch (error) {
+      console.error('OpenRouter analysis failed; using local fallback', error instanceof Error ? error.message : error);
+      warnings.push('AI 模型暫時無法完成解析，已使用後端備援規則。');
+      raw = parseRestaurantLocally(sourceCaption);
+    }
 
     response.json(
       sanitizeImportAnalysis({

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Alert, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { RatingStars } from '../components/RatingStars';
 import { Screen } from '../components/Screen';
 import { TagChip } from '../components/TagChip';
@@ -31,6 +31,7 @@ type FormState = {
   aiExtractedTags: string[];
   aiDailyMealTags: string[];
   aiCuisineTags: string[];
+  aiWarnings: string[];
   aiConfidence: string;
   isImportedFromSocial: boolean;
 };
@@ -52,6 +53,7 @@ const emptyForm: FormState = {
   aiExtractedTags: [],
   aiDailyMealTags: [],
   aiCuisineTags: [],
+  aiWarnings: [],
   aiConfidence: '',
   isImportedFromSocial: false,
 };
@@ -130,6 +132,7 @@ export function AddScreen() {
         aiExtractedTags: result.aiExtractedTags ?? result.tags ?? [],
         aiDailyMealTags: result.aiDailyMealTags ?? [],
         aiCuisineTags: result.aiCuisineTags ?? [],
+        aiWarnings: result.warnings ?? [],
         aiConfidence: result.aiConfidence ? String(result.aiConfidence) : '',
         isImportedFromSocial: true,
       });
@@ -146,6 +149,7 @@ export function AddScreen() {
         sourcePlatform: detectedImportUrl ? detectSourcePlatform(detectedImportUrl) : 'Other',
         aiDailyMealTags: [],
         aiCuisineTags: [],
+        aiWarnings: ['AI 服務暫時無法完成解析，已保留來源資訊供手動補齊。'],
         aiConfidence: '0.18',
         isImportedFromSocial: true,
       });
@@ -204,7 +208,8 @@ export function AddScreen() {
   };
 
   return (
-    <Screen title="Add" subtitle="新增口袋名單，或貼上社群連結輔助匯入。">
+    <View style={styles.screenRoot}>
+      <Screen title="Add" subtitle="新增口袋名單，或貼上社群連結輔助匯入。">
       <View style={styles.segment}>
         <Pressable style={[styles.segmentButton, mode === 'manual' && styles.segmentActive]} onPress={() => setMode('manual')}>
           <Text style={[styles.segmentText, mode === 'manual' && styles.segmentTextActive]}>手動新增</Text>
@@ -252,6 +257,12 @@ export function AddScreen() {
             <View style={styles.analysisBox}>
               <Text style={styles.analysisTitle}>AI 信心分數：{Math.round(Number(form.aiConfidence) * 100)}%</Text>
               <Text style={styles.analysisText}>{missingFields.length ? `缺漏欄位：${missingFields.join('、')}` : '必要欄位已具備，請再檢查內容是否正確。'}</Text>
+            </View>
+          ) : null}
+          {mode === 'import' && form.aiWarnings.length ? (
+            <View style={styles.warningBox}>
+              <Text style={styles.warningTitle}>AI 解析提醒</Text>
+              <Text style={styles.analysisText}>{form.aiWarnings.join('、')}</Text>
             </View>
           ) : null}
           {mode === 'import' && (form.aiDailyMealTags.length || form.aiCuisineTags.length) ? (
@@ -348,7 +359,17 @@ export function AddScreen() {
           </Pressable>
         </View>
       ) : null}
-    </Screen>
+      </Screen>
+      <Modal visible={isAnalyzing} transparent animationType="fade" statusBarTranslucent>
+        <View style={styles.loadingOverlay}>
+          <View style={styles.loadingCard}>
+            <ActivityIndicator size="large" color={colors.primary} />
+            <Text style={styles.loadingTitle}>請稍後</Text>
+            <Text style={styles.loadingText}>AI 正在解讀 Reels 文案並提取店家資訊...</Text>
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 }
 
@@ -384,6 +405,9 @@ function LabeledInput({
 }
 
 const styles = StyleSheet.create({
+  screenRoot: {
+    flex: 1,
+  },
   segment: {
     flexDirection: 'row',
     padding: 4,
@@ -577,13 +601,52 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     marginBottom: spacing.md,
   },
+  warningBox: {
+    backgroundColor: '#fff4e5',
+    borderRadius: radius.md,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+  },
   analysisTitle: {
     color: colors.primary,
     fontWeight: '900',
     marginBottom: spacing.xs,
   },
+  warningTitle: {
+    color: '#8a4b00',
+    fontWeight: '900',
+    marginBottom: spacing.xs,
+  },
   analysisText: {
     color: colors.onSurfaceVariant,
+    lineHeight: 20,
+  },
+  loadingOverlay: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(21, 18, 16, 0.42)',
+    padding: spacing.lg,
+  },
+  loadingCard: {
+    width: '100%',
+    maxWidth: 320,
+    alignItems: 'center',
+    borderRadius: radius.lg,
+    backgroundColor: colors.surfaceContainerLowest,
+    padding: spacing.xl,
+    ...shadow.card,
+  },
+  loadingTitle: {
+    marginTop: spacing.md,
+    color: colors.onSurface,
+    fontSize: 20,
+    fontWeight: '900',
+  },
+  loadingText: {
+    marginTop: spacing.sm,
+    color: colors.onSurfaceVariant,
+    textAlign: 'center',
     lineHeight: 20,
   },
 });
