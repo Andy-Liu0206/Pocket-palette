@@ -1,7 +1,6 @@
 # Pocket Palette
 
-React Native + Expo + TypeScript 美食地圖 App 原型。
-目的要讓大家吃遍美食
+React Native + Expo + TypeScript 美食地圖 App 原型，目的要讓大家享受吃美食。
 
 ## 功能
 
