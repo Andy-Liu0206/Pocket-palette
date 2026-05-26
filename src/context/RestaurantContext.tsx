@@ -8,6 +8,7 @@ type RestaurantContextValue = {
   isLoading: boolean;
   addRestaurant: (draft: RestaurantDraft) => Promise<Restaurant>;
   updateRestaurant: (id: string, updates: Partial<Restaurant>) => Promise<void>;
+  deleteRestaurant: (id: string) => Promise<void>;
   restoreMockData: () => Promise<void>;
 };
 
@@ -62,14 +63,22 @@ export function RestaurantProvider({ children }: { children: React.ReactNode }) 
     [persist, restaurants],
   );
 
+  const deleteRestaurant = useCallback(
+    async (id: string) => {
+      const nextRestaurants = restaurants.filter((restaurant) => restaurant.id !== id);
+      await persist(nextRestaurants);
+    },
+    [persist, restaurants],
+  );
+
   const restoreMockData = useCallback(async () => {
     const restored = await resetRestaurants();
     setRestaurants(restored);
   }, []);
 
   const value = useMemo(
-    () => ({ restaurants, isLoading, addRestaurant, updateRestaurant, restoreMockData }),
-    [addRestaurant, isLoading, restaurants, restoreMockData, updateRestaurant],
+    () => ({ restaurants, isLoading, addRestaurant, updateRestaurant, deleteRestaurant, restoreMockData }),
+    [addRestaurant, deleteRestaurant, isLoading, restaurants, restoreMockData, updateRestaurant],
   );
 
   return <RestaurantContext.Provider value={value}>{children}</RestaurantContext.Provider>;

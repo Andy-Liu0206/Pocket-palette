@@ -132,6 +132,6 @@ export function parseRestaurantLocally(caption: string) {
     aiCuisineTags: cuisine,
     aiSummary: '',
     aiConfidence: 0.45,
-    warnings: ['OpenRouter AI 暫時無法完成解析，已使用後端備援規則擷取。'],
+    warnings: [],
   };
 }

@@ -18,7 +18,7 @@ const heroImages = [
 ];
 
 export function RestaurantDetailScreen({ route, navigation }: RestaurantDetailProps) {
-  const { restaurants, updateRestaurant } = useRestaurants();
+  const { restaurants, updateRestaurant, deleteRestaurant } = useRestaurants();
   const insets = useSafeAreaInsets();
   const restaurant = restaurants.find((item) => item.id === route.params.restaurantId);
 
@@ -49,6 +49,24 @@ export function RestaurantDetailScreen({ route, navigation }: RestaurantDetailPr
     await Share.share({
       message: `${restaurant.name}\n${restaurant.city}${restaurant.district}\n${getGoogleMapsUrl(restaurant)}`,
     });
+  };
+
+  const confirmDeleteRestaurant = () => {
+    Alert.alert('刪除此口袋名單？', `確定要刪除「${restaurant.name}」嗎？此動作會同步移除所有頁面中的餐廳資料。`, [
+      { text: '取消', style: 'cancel' },
+      {
+        text: '刪除',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await deleteRestaurant(restaurant.id);
+            navigation.goBack();
+          } catch {
+            Alert.alert('刪除失敗', '目前無法刪除此餐廳，請稍後再試。');
+          }
+        },
+      },
+    ]);
   };
 
   return (
@@ -136,6 +154,11 @@ export function RestaurantDetailScreen({ route, navigation }: RestaurantDetailPr
           </View>
 
           {restaurant.sourceUrl || restaurant.isImportedFromSocial ? <SourceInfo restaurant={restaurant} /> : null}
+
+          <Pressable style={styles.deleteButton} onPress={confirmDeleteRestaurant}>
+            <Ionicons name="trash-outline" size={20} color="#b3261e" />
+            <Text style={styles.deleteButtonText}>刪除此口袋名單</Text>
+          </Pressable>
         </View>
       </ScrollView>
 
@@ -417,6 +440,23 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     color: colors.onSurface,
     textAlignVertical: 'top',
+  },
+  deleteButton: {
+    minHeight: 54,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: '#f0b7b2',
+    backgroundColor: '#fff5f4',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    marginTop: spacing.lg,
+  },
+  deleteButtonText: {
+    color: '#b3261e',
+    fontWeight: '900',
+    fontSize: 16,
   },
   sourceCard: {
     backgroundColor: colors.surfaceContainerLowest,

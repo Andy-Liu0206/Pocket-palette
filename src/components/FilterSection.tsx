@@ -1,17 +1,16 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
+import { Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { categoryGroups } from '../data/categories';
 import { taiwanAreas } from '../data/taiwanAreas';
 import { colors, radius, shadow, spacing } from '../theme';
-import type { RestaurantStatus } from '../types/restaurant';
 import { TagChip } from './TagChip';
 import { WheelPicker } from './WheelPicker';
 
 export type ListFilters = {
   city: string;
-  district: string;
+  districts: string[];
   tags: string[];
-  rating: string;
-  status: string;
 };
 
 type FilterSectionProps = {
@@ -19,10 +18,20 @@ type FilterSectionProps = {
   onChange: (filters: ListFilters) => void;
 };
 
-const statuses: RestaurantStatus[] = ['尚未去過', '已去過', '我的最愛'];
+const listCategoryGroups = categoryGroups.filter((group) => group.title === '日常餐食' || group.title === '料理種類');
 
 export function FilterSection({ filters, onChange }: FilterSectionProps) {
+  const [customTags, setCustomTags] = useState<Record<string, string[]>>({});
+  const [customTagDraft, setCustomTagDraft] = useState<{ groupTitle: string; value: string } | null>(null);
   const districts = filters.city ? taiwanAreas[filters.city] ?? [] : [];
+
+  const toggleDistrict = (district: string) => {
+    const nextDistricts = filters.districts.includes(district)
+      ? filters.districts.filter((current) => current !== district)
+      : [...filters.districts, district];
+    onChange({ ...filters, districts: nextDistricts });
+  };
+
   const toggleTag = (tag: string) => {
     const nextTags = filters.tags.includes(tag)
       ? filters.tags.filter((current) => current !== tag)
@@ -30,61 +39,89 @@ export function FilterSection({ filters, onChange }: FilterSectionProps) {
     onChange({ ...filters, tags: nextTags });
   };
 
+  const addCustomTag = () => {
+    if (!customTagDraft) return;
+    const value = customTagDraft.value.trim();
+    if (!value) {
+      setCustomTagDraft(null);
+      return;
+    }
+
+    setCustomTags((current) => {
+      const groupTags = current[customTagDraft.groupTitle] ?? [];
+      if (groupTags.includes(value)) return current;
+      return { ...current, [customTagDraft.groupTitle]: [...groupTags, value] };
+    });
+    if (!filters.tags.includes(value)) {
+      onChange({ ...filters, tags: [...filters.tags, value] });
+    }
+    setCustomTagDraft(null);
+  };
+
   return (
     <View style={styles.card}>
       <Text style={styles.sectionTitle}>篩選條件</Text>
 
       <Text style={styles.label}>地區</Text>
-      <View style={styles.pickerRow}>
-        <View style={styles.flex}>
-          <WheelPicker
-            items={Object.keys(taiwanAreas)}
-            value={filters.city}
-            placeholder="選擇城市"
-            onChange={(city) => onChange({ ...filters, city, district: '' })}
-          />
-        </View>
-        <View style={styles.flex}>
-          <WheelPicker
-            items={districts}
-            value={filters.district}
-            placeholder="選擇區域"
-            onChange={(district) => onChange({ ...filters, district })}
-          />
-        </View>
+      <View style={styles.cityPicker}>
+        <WheelPicker
+          items={Object.keys(taiwanAreas)}
+          value={filters.city}
+          placeholder="選擇城市"
+          onChange={(city) => onChange({ ...filters, city, districts: [] })}
+        />
+      </View>
+      <View style={styles.optionRow}>
+        <FilterButton label="全部區域" selected={!filters.districts.length} onPress={() => onChange({ ...filters, districts: [] })} />
+        {districts.map((district) => (
+          <FilterButton key={district} label={district} selected={filters.districts.includes(district)} onPress={() => toggleDistrict(district)} />
+        ))}
       </View>
 
       <Text style={styles.label}>類別</Text>
-      {categoryGroups.map((group) => (
+      {listCategoryGroups.map((group) => (
         <View key={group.title} style={styles.group}>
           <Text style={styles.groupTitle}>{group.title}</Text>
           <View style={styles.chips}>
-            {group.tags.map((tag) => (
+            {[...group.tags, ...(customTags[group.title] ?? [])].map((tag) => (
               <TagChip key={tag} label={tag} selected={filters.tags.includes(tag)} onPress={() => toggleTag(tag)} />
             ))}
+            <Pressable style={styles.addTagButton} onPress={() => setCustomTagDraft({ groupTitle: group.title, value: '' })}>
+              <Ionicons name="add" size={18} color={colors.primary} />
+            </Pressable>
           </View>
         </View>
       ))}
 
-      <Text style={styles.label}>星星數</Text>
-      <View style={styles.optionRow}>
-        <FilterButton label="全部" selected={!filters.rating} onPress={() => onChange({ ...filters, rating: '' })} />
-        {[1, 2, 3, 4, 5].map((rating) => (
-          <FilterButton key={rating} label={`${rating}星`} selected={filters.rating === String(rating)} onPress={() => onChange({ ...filters, rating: String(rating) })} />
-        ))}
-      </View>
-
-      <Text style={styles.label}>狀態</Text>
-      <View style={styles.optionRow}>
-        <FilterButton label="全部" selected={!filters.status} onPress={() => onChange({ ...filters, status: '' })} />
-        {statuses.map((status) => (
-          <FilterButton key={status} label={status} selected={filters.status === status} onPress={() => onChange({ ...filters, status })} />
-        ))}
-      </View>
-
-      {filters.tags.length ? (
-        <Text style={styles.selectedText}>已選：{filters.tags.join('、')}</Text>
+      {filters.districts.length || filters.tags.length ? (
+        <Text style={styles.selectedText}>
+          已選：{[...filters.districts, ...filters.tags].join('、')}
+        </Text>
       ) : null}
+
+      <Modal visible={Boolean(customTagDraft)} transparent animationType="fade" onRequestClose={() => setCustomTagDraft(null)}>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
+            <Text style={styles.modalTitle}>新增{customTagDraft?.groupTitle}</Text>
+            <TextInput
+              value={customTagDraft?.value ?? ''}
+              onChangeText={(value) => setCustomTagDraft((current) => (current ? { ...current, value } : current))}
+              placeholder="輸入自定義分類"
+              placeholderTextColor={colors.outline}
+              autoFocus
+              style={styles.modalInput}
+            />
+            <View style={styles.modalActions}>
+              <Pressable style={styles.modalSecondaryButton} onPress={() => setCustomTagDraft(null)}>
+                <Text style={styles.modalSecondaryText}>取消</Text>
+              </Pressable>
+              <Pressable style={styles.modalPrimaryButton} onPress={addCustomTag}>
+                <Text style={styles.modalPrimaryText}>新增</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -117,12 +154,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
     marginTop: spacing.sm,
   },
-  pickerRow: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-  },
-  flex: {
-    flex: 1,
+  cityPicker: {
+    marginBottom: spacing.sm,
   },
   group: {
     marginBottom: spacing.sm,
@@ -135,6 +168,18 @@ const styles = StyleSheet.create({
   chips: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+  },
+  addTagButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    backgroundColor: colors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: spacing.sm,
+    marginBottom: spacing.sm,
   },
   optionRow: {
     flexDirection: 'row',
@@ -165,5 +210,58 @@ const styles = StyleSheet.create({
     color: colors.onSurfaceVariant,
     marginTop: spacing.sm,
     lineHeight: 20,
+  },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(34, 26, 18, 0.36)',
+    justifyContent: 'center',
+    padding: spacing.lg,
+  },
+  modalCard: {
+    backgroundColor: colors.surfaceContainerLowest,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
+    ...shadow.card,
+  },
+  modalTitle: {
+    color: colors.onSurface,
+    fontSize: 18,
+    fontWeight: '900',
+    marginBottom: spacing.md,
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    borderRadius: radius.md,
+    backgroundColor: colors.surface,
+    color: colors.onSurface,
+    minHeight: 48,
+    paddingHorizontal: spacing.md,
+    marginBottom: spacing.md,
+  },
+  modalActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: spacing.sm,
+  },
+  modalSecondaryButton: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: 10,
+    borderRadius: radius.md,
+    backgroundColor: colors.surfaceContainer,
+  },
+  modalPrimaryButton: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: 10,
+    borderRadius: radius.md,
+    backgroundColor: colors.primaryContainer,
+  },
+  modalSecondaryText: {
+    color: colors.onSurfaceVariant,
+    fontWeight: '900',
+  },
+  modalPrimaryText: {
+    color: colors.onPrimaryContainer,
+    fontWeight: '900',
   },
 });

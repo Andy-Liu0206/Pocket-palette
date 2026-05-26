@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RestaurantProvider } from './src/context/RestaurantContext';
 import { AddScreen } from './src/screens/AddScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
@@ -59,25 +60,27 @@ function MainTabs() {
 
 export default function App() {
   return (
-    <RestaurantProvider>
-      <NavigationContainer>
-        <StatusBar style="dark" />
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: colors.surface },
-            headerTintColor: colors.primary,
-            headerTitleStyle: { fontWeight: '700' },
-            contentStyle: { backgroundColor: colors.surface },
-          }}
-        >
-          <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
-          <Stack.Screen
-            name="RestaurantDetail"
-            component={RestaurantDetailScreen}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </RestaurantProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <RestaurantProvider>
+        <NavigationContainer>
+          <StatusBar style="dark" />
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: colors.surface },
+              headerTintColor: colors.primary,
+              headerTitleStyle: { fontWeight: '700' },
+              contentStyle: { backgroundColor: colors.surface },
+            }}
+          >
+            <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
+            <Stack.Screen
+              name="RestaurantDetail"
+              component={RestaurantDetailScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </RestaurantProvider>
+    </GestureHandlerRootView>
   );
 }
