@@ -4,7 +4,7 @@ import { colors } from '../theme';
 
 type RatingStarsProps = {
   rating?: number;
-  onChange?: (rating: number) => void;
+  onChange?: (rating?: number) => void;
   size?: number;
 };
 
@@ -26,7 +26,7 @@ export function RatingStars({ rating, onChange, size = 20 }: RatingStarsProps) {
 
         if (!onChange) return icon;
         return (
-          <Pressable key={star} onPress={() => onChange(star)} hitSlop={8}>
+          <Pressable key={star} onPress={() => onChange(rating === star ? undefined : star)} hitSlop={8}>
             {icon}
           </Pressable>
         );

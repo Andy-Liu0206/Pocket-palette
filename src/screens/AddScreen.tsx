@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, Alert, Linking, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import * as Location from 'expo-location';
 import { RatingStars } from '../components/RatingStars';
 import { Screen } from '../components/Screen';
 import { TagChip } from '../components/TagChip';
@@ -13,6 +15,8 @@ import { extractCoordinateFromUrl } from '../utils/locationResolver';
 import { analyzeSocialFoodUrl, detectSourcePlatform, normalizeSocialUrl } from '../utils/socialImport';
 
 type AddMode = 'manual' | 'import';
+type Coordinate = { latitude: number; longitude: number };
+type MapLookupStatus = 'idle' | 'loading' | 'found' | 'empty';
 
 type FormState = {
   name: string;
@@ -58,8 +62,13 @@ const emptyForm: FormState = {
   isImportedFromSocial: false,
 };
 
-const statuses: RestaurantStatus[] = ['尚未去過', '已去過', '我的最愛'];
 const platforms: SourcePlatform[] = ['Instagram', 'Threads', 'Reels', 'Google Maps', 'Website', 'Other'];
+const addCategoryGroups = categoryGroups.filter((group) => group.title === '日常餐食' || group.title === '料理種類');
+const addCategoryTags = addCategoryGroups.flatMap((group) => group.tags);
+
+function getMapSearchUrl(query: string) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
 
 export function AddScreen() {
   const { addRestaurant } = useRestaurants();
@@ -71,11 +80,17 @@ export function AddScreen() {
   const [importError, setImportError] = useState('');
   const [missingFields, setMissingFields] = useState<string[]>([]);
   const [hasImportResult, setHasImportResult] = useState(false);
+  const [mapCoordinate, setMapCoordinate] = useState<Coordinate | null>(null);
+  const [mapLookupStatus, setMapLookupStatus] = useState<MapLookupStatus>('idle');
 
   const districts = useMemo(() => taiwanAreas[form.city] ?? [], [form.city]);
   const detectedImportUrl = useMemo(() => normalizeSocialUrl(url), [url]);
   const hasImportInput = Boolean(url.trim() || pastedCaption.trim() || hasImportResult);
   const canSave = Boolean(form.name.trim() && form.city && form.district && form.tags.length > 0);
+  const mapSearchQuery = useMemo(
+    () => [form.name.trim(), form.address.trim(), form.city, form.district].filter(Boolean).join(' '),
+    [form.address, form.city, form.district, form.name],
+  );
 
   const updateForm = (updates: Partial<FormState>) => setForm((current) => ({ ...current, ...updates }));
 
@@ -97,6 +112,43 @@ export function AddScreen() {
       sourcePlatform: form.sourcePlatform === platform ? '' : platform,
     });
   };
+
+  useEffect(() => {
+    if (!form.address.trim()) {
+      setMapCoordinate(null);
+      setMapLookupStatus('idle');
+      return undefined;
+    }
+
+    let cancelled = false;
+    setMapLookupStatus('loading');
+
+    const timer = setTimeout(() => {
+      Location.geocodeAsync(mapSearchQuery)
+        .then((results) => {
+          if (cancelled) return;
+          const first = results[0];
+          if (!first) {
+            setMapCoordinate(null);
+            setMapLookupStatus('empty');
+            return;
+          }
+          setMapCoordinate({ latitude: first.latitude, longitude: first.longitude });
+          setMapLookupStatus('found');
+        })
+        .catch(() => {
+          if (!cancelled) {
+            setMapCoordinate(null);
+            setMapLookupStatus('empty');
+          }
+        });
+    }, 700);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [form.address, mapSearchQuery]);
 
   const getImportFeedback = (sourceCaption: string | undefined, missing: string[]) => {
     if (!sourceCaption?.trim()) {
@@ -121,7 +173,7 @@ export function AddScreen() {
         district: result.district ?? (result.city ? taiwanAreas[result.city]?.[0] ?? '' : emptyForm.district),
         address: result.address ?? '',
         signatureFood: result.signatureFood ?? '',
-        tags: result.tags ?? [],
+        tags: (result.tags ?? []).filter((tag) => (addCategoryTags as readonly string[]).includes(tag)),
         status: result.status ?? '尚未去過',
         rating: result.rating,
         comment: result.comment ?? '',
@@ -188,8 +240,8 @@ export function AddScreen() {
       status: form.status,
       rating: form.rating,
       comment: form.comment.trim() || undefined,
-      latitude: sourceCoordinate?.latitude,
-      longitude: sourceCoordinate?.longitude,
+      latitude: sourceCoordinate?.latitude ?? mapCoordinate?.latitude,
+      longitude: sourceCoordinate?.longitude ?? mapCoordinate?.longitude,
       sourceUrl: normalizedSourceUrl || undefined,
       sourcePlatform: form.sourcePlatform || (hasSource ? detectSourcePlatform(normalizedSourceUrl) : undefined),
       sourceCaption: form.sourceCaption.trim() || undefined,
@@ -290,23 +342,20 @@ export function AddScreen() {
           </View>
 
           <LabeledInput label="地址 / 位置資訊" value={form.address} onChangeText={(address) => updateForm({ address })} />
-          <LabeledInput label="招牌食物" value={form.signatureFood} onChangeText={(signatureFood) => updateForm({ signatureFood })} />
-
-          <Text style={styles.label}>狀態</Text>
-          <View style={styles.statusRow}>
-            {statuses.map((status) => (
-              <Pressable
-                key={status}
-                style={[styles.statusButton, form.status === status && styles.statusButtonActive]}
-                onPress={() => updateForm({ status })}
-              >
-                <Text style={[styles.statusButtonText, form.status === status && styles.statusButtonTextActive]}>{status}</Text>
-              </Pressable>
-            ))}
-          </View>
+          <GoogleMapConfirmation
+            query={mapSearchQuery}
+            coordinate={mapCoordinate}
+            status={mapLookupStatus}
+          />
+          <LabeledInput
+            label="招牌食物"
+            value={form.signatureFood}
+            onChangeText={(signatureFood) => updateForm({ signatureFood })}
+            placeholder="使用逗號或空白可同時新增多個美食!"
+          />
 
           <Text style={styles.label}>標籤分類 * 可複選</Text>
-          {categoryGroups.map((group) => (
+          {addCategoryGroups.map((group) => (
             <View key={group.title} style={styles.tagGroup}>
               <Text style={styles.tagGroupTitle}>{group.title}</Text>
               <View style={styles.chips}>
@@ -404,6 +453,65 @@ function LabeledInput({
   );
 }
 
+function GoogleMapConfirmation({
+  query,
+  coordinate,
+  status,
+}: {
+  query: string;
+  coordinate: Coordinate | null;
+  status: MapLookupStatus;
+}) {
+  if (status === 'idle') return null;
+
+  const openMap = () => {
+    Linking.openURL(getMapSearchUrl(query));
+  };
+
+  return (
+    <View style={styles.mapConfirmCard}>
+      <View style={styles.mapConfirmHeader}>
+        <View style={styles.mapConfirmTextBlock}>
+          <Text style={styles.mapConfirmTitle}>Google Maps 確認</Text>
+          <Text style={styles.mapConfirmSubtitle}>
+            {status === 'loading'
+              ? '正在依地址搜尋地圖位置...'
+              : status === 'found'
+                ? '請確認地圖顯示的位置是否為這間餐廳。'
+                : '目前無法自動定位，可開啟 Google Maps 手動確認。'}
+          </Text>
+        </View>
+        <Pressable style={styles.mapOpenButton} onPress={openMap}>
+          <Text style={styles.mapOpenButtonText}>開啟</Text>
+        </Pressable>
+      </View>
+
+      {coordinate ? (
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          style={styles.mapPreview}
+          scrollEnabled={false}
+          zoomEnabled={false}
+          rotateEnabled={false}
+          pitchEnabled={false}
+          region={{
+            latitude: coordinate.latitude,
+            longitude: coordinate.longitude,
+            latitudeDelta: 0.008,
+            longitudeDelta: 0.008,
+          }}
+        >
+          <Marker coordinate={coordinate} title={query || '餐廳位置'} />
+        </MapView>
+      ) : (
+        <Pressable style={styles.mapFallback} onPress={openMap}>
+          <Text style={styles.mapFallbackText}>{status === 'loading' ? '搜尋中...' : '前往 Google Maps 確認餐廳位置'}</Text>
+        </Pressable>
+      )}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   screenRoot: {
     flex: 1,
@@ -466,6 +574,59 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     minHeight: 48,
     color: colors.onSurface,
+  },
+  mapConfirmCard: {
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    borderRadius: radius.md,
+    backgroundColor: colors.surface,
+    overflow: 'hidden',
+    marginTop: -spacing.sm,
+    marginBottom: spacing.md,
+  },
+  mapConfirmHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  mapConfirmTextBlock: {
+    flex: 1,
+  },
+  mapConfirmTitle: {
+    color: colors.onSurface,
+    fontWeight: '900',
+    marginBottom: 4,
+  },
+  mapConfirmSubtitle: {
+    color: colors.onSurfaceVariant,
+    lineHeight: 20,
+  },
+  mapOpenButton: {
+    borderRadius: radius.pill,
+    backgroundColor: colors.primaryContainer,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 10,
+  },
+  mapOpenButtonText: {
+    color: colors.onPrimaryContainer,
+    fontWeight: '900',
+  },
+  mapPreview: {
+    height: 180,
+    width: '100%',
+  },
+  mapFallback: {
+    minHeight: 128,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.surfaceContainer,
+    padding: spacing.md,
+  },
+  mapFallbackText: {
+    color: colors.primary,
+    fontWeight: '900',
+    textAlign: 'center',
   },
   multilineInput: {
     minHeight: 96,

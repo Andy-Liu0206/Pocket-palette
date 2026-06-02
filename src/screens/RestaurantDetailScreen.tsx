@@ -36,7 +36,7 @@ export function RestaurantDetailScreen({ route, navigation }: RestaurantDetailPr
     await updateRestaurant(restaurant.id, { status });
   };
 
-  const updateRating = async (rating: number) => {
+  const updateRating = async (rating?: number) => {
     await updateRestaurant(restaurant.id, { rating });
   };
 
