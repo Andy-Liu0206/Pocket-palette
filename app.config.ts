@@ -12,6 +12,7 @@ const config: ExpoConfig = {
   assetBundlePatterns: ['**/*'],
   ios: {
     supportsTablet: false,
+    bundleIdentifier: 'com.pocketpalette.app',
     config: googleMapsApiKey
       ? {
           googleMapsApiKey,
@@ -25,9 +26,26 @@ const config: ExpoConfig = {
     googleMapsApiKey,
   },
   android: {
+    package: 'com.pocketpalette.app',
     permissions: ['ACCESS_COARSE_LOCATION', 'ACCESS_FINE_LOCATION'],
   },
-  plugins: ['expo-location', 'expo-font'],
+  plugins: [
+    'expo-location',
+    'expo-font',
+    [
+      'expo-share-intent',
+      {
+        // 讓 Pocket Palette 出現在 IG / Threads 等 App 的「分享」選單，
+        // 接收分享過來的網址或純文字（例如 IG Reels 連結）。
+        iosActivationRules: {
+          NSExtensionActivationSupportsWebURLWithMaxCount: 1,
+          NSExtensionActivationSupportsWebPageWithMaxCount: 1,
+          NSExtensionActivationSupportsText: true,
+        },
+        androidIntentFilters: ['text/*'],
+      },
+    ],
+  ],
 };
 
 export default config;

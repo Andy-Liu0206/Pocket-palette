@@ -1,10 +1,12 @@
 import 'react-native-gesture-handler';
 
+import { useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
+import { useShareIntent } from 'expo-share-intent';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RestaurantProvider } from './src/context/RestaurantContext';
 import { AddScreen } from './src/screens/AddScreen';
@@ -18,6 +20,41 @@ import type { RootStackParamList, TabParamList } from './src/types/navigation';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
+
+const navigationRef = createNavigationContainerRef<RootStackParamList>();
+
+// 監聽從其他 App（IG / Threads…）分享進來的內容，帶著連結跳到 Add 分頁。
+function ShareIntentBridge() {
+  const { hasShareIntent, shareIntent, resetShareIntent } = useShareIntent();
+
+  useEffect(() => {
+    if (!hasShareIntent) return;
+    const sharedText = shareIntent.webUrl ?? shareIntent.text ?? '';
+    if (!sharedText.trim()) return;
+
+    let cancelled = false;
+    const routeToAdd = () => {
+      if (cancelled) return;
+      if (navigationRef.isReady()) {
+        navigationRef.navigate('MainTabs', {
+          screen: 'Add',
+          params: { sharedText, sharedAt: Date.now() },
+        });
+        resetShareIntent();
+      } else {
+        // NavigationContainer 尚未掛載完成時稍後再試一次。
+        setTimeout(routeToAdd, 250);
+      }
+    };
+    routeToAdd();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [hasShareIntent, shareIntent, resetShareIntent]);
+
+  return null;
+}
 
 function MainTabs() {
   return (
@@ -62,7 +99,8 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <RestaurantProvider>
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
+          <ShareIntentBridge />
           <StatusBar style="dark" />
           <Stack.Navigator
             screenOptions={{

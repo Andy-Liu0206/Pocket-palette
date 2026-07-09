@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Alert, Linking, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useNavigation, useRoute, type NavigationProp, type RouteProp } from '@react-navigation/native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { RatingStars } from '../components/RatingStars';
@@ -11,6 +12,7 @@ import { taiwanAreas } from '../data/taiwanAreas';
 import { useRestaurants } from '../context/RestaurantContext';
 import { colors, radius, shadow, spacing } from '../theme';
 import type { RestaurantDraft, RestaurantStatus, SourcePlatform } from '../types/restaurant';
+import type { TabParamList } from '../types/navigation';
 import { extractCoordinateFromUrl } from '../utils/locationResolver';
 import { analyzeSocialFoodUrl, detectSourcePlatform, normalizeSocialUrl } from '../utils/socialImport';
 
@@ -72,6 +74,8 @@ function getMapSearchUrl(query: string) {
 
 export function AddScreen() {
   const { addRestaurant } = useRestaurants();
+  const navigation = useNavigation<NavigationProp<TabParamList, 'Add'>>();
+  const route = useRoute<RouteProp<TabParamList, 'Add'>>();
   const [mode, setMode] = useState<AddMode>('manual');
   const [form, setForm] = useState<FormState>(emptyForm);
   const [url, setUrl] = useState('');
@@ -149,6 +153,22 @@ export function AddScreen() {
       clearTimeout(timer);
     };
   }, [form.address, mapSearchQuery]);
+
+  // 從 IG / Threads 等 App 分享進來時，切到「連結匯入」並帶入連結。
+  useEffect(() => {
+    const shared = route.params?.sharedText?.trim();
+    if (!shared) return;
+    setMode('import');
+    setUrl(shared);
+    setPastedCaption('');
+    setImportError('');
+    setMissingFields([]);
+    setHasImportResult(false);
+    // 清掉參數，避免重新 render 時重複觸發。
+    navigation.setParams({ sharedText: undefined, sharedAt: undefined });
+    // 依 sharedAt 觸發，讓同一則連結再次分享時仍會重新帶入。
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route.params?.sharedAt]);
 
   const getImportFeedback = (sourceCaption: string | undefined, missing: string[]) => {
     if (!sourceCaption?.trim()) {
