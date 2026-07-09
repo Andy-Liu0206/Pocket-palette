@@ -79,6 +79,32 @@ src/
 src/utils/socialImport.ts
 ```
 
+## 從 IG 分享選單匯入（Share Target）
+
+Pocket Palette 已註冊為 iOS / Android 的分享目標。在 Instagram / Threads 等 App 點「分享」，選單裡會出現 Pocket Palette；選擇後 App 會自動開啟並跳到 **Add > 連結匯入**，把分享的連結帶入輸入框，你再按「分析連結」即可。
+
+實作：
+
+- 套件 `expo-share-intent`（config plugin）在 iOS 建立 Share Extension、在 Android 加上 `ACTION_SEND` intent filter，設定在 `app.config.ts` 的 `plugins`。
+- `App.tsx` 的 `ShareIntentBridge` 用 `useShareIntent()` 監聽分享事件，帶著 `sharedText` 導覽到 Add 分頁。
+- `src/screens/AddScreen.tsx` 讀取路由參數 `sharedText`，切到「連結匯入」模式並帶入連結。
+
+**重要限制**：這是原生功能，**Expo Go 無法執行**，必須用 development build。在 Windows 上 iOS build 需透過 EAS Build（雲端）：
+
+```powershell
+npm.cmd install -g eas-cli
+eas login
+npm.cmd run build:dev:ios        # 或 build:dev:android
+```
+
+build 完成安裝到手機後，用 dev client 連線開發：
+
+```powershell
+npm.cmd run start:dev
+```
+
+App 的 bundle identifier 為 `com.pocketpalette.app`（首次 EAS build 會協助建立 iOS 憑證）。
+
 ## OpenRouter AI 匯入後端
 
 Pocket Palette 的 Add > 連結匯入可串接 `server/` 內的小型 Node/Express 後端。後端會抓取公開貼文 metadata，呼叫 OpenRouter 模型 `qwen/qwen3-next-80b-a3b-instruct:free`，再回傳 App 目前使用的餐廳草稿格式。
